@@ -3,9 +3,9 @@ import { Gift } from "../models/giftModel.js";
 // Create a gift
 export const createGift = async (req, res) => {
   try {
-    if (!req.body.name || !req.body.description || !req.body.price) {
+    if (!req.body.title || !req.body.description || !req.body.price) {
       return res.status(400).json({
-        mssage: "Send all required fields: title, description, price",
+        message: "Send all required fields: title, description, price",
       });
     }
     const newGift = await Gift.create(req.body);

@@ -6,13 +6,9 @@ import {
   getGiftById,
   updateGift,
 } from "../controllers/giftController.js";
-// import { app } from "../app.js";
 
-const app = exress();
 // Gift Router
 export const giftRouter = exress.Router();
-
-app.use("/gifts", giftRouter);
 
 // Gift CRUD Operations
 
