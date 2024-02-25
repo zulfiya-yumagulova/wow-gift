@@ -2,7 +2,7 @@
 import React from "react";
 
 function CreateGift() {
-  return <div>createGift</div>;
+  return <div>CreateGift</div>;
 }
 
 export default CreateGift;
