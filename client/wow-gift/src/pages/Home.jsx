@@ -44,23 +44,51 @@ function Home() {
   //     console.log(gift, "gift from map");
   //   });
   // }
+
+  //   <div class="max-w-sm rounded overflow-hidden shadow-lg">
+  //   <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains">
+  //   <div class="px-6 py-4">
+  //     <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+  //     <p class="text-gray-700 text-base">
+  //       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+  //     </p>
+  //   </div>
+  //   <div class="px-6 pt-4 pb-2">
+  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
+  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
+  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+  //   </div>
+  // </div>
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl my-8">Gifts</h1>
-        <Link to="/books/create">
-          <MdOutlineAddBox className="text-sky-800 text-4xl" />
-        </Link>
+        <Link to="/books/create"></Link>
       </div>
       {loading ? (
         <Spinner />
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="flex flex-wrap content-center">
           {gifts.map((gift, index) => (
-            <div key={index} className="bg-gray-300 h-5">
-              <div className="card">
-                <h3>{gift.title}</h3>
-                <h3>{gift.description}</h3>
+            <div
+              key={index}
+              className="m-3 max-w-sm rounded overflow-hidden shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 mb-4 bg-gray-500"
+            >
+              {/* <img className="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> */}
+              <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">{gift.title}</div>
+                <p className="text-gray-700 text-base">{gift.description}</p>
+              </div>
+              <div className="px-6 pt-4 pb-2">
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  #photography
+                </span>
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  #travel
+                </span>
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  #winter
+                </span>
               </div>
             </div>
           ))}
