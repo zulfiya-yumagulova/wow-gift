@@ -14,6 +14,24 @@ const giftSchema = mongoose.Schema({
     type: Number,
     requered: true,
   },
+  discount: {
+    type: Boolean,
+  },
+  discountPrice: {
+    type: Number,
+  },
+  nname: String,
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
   time: { type: Date, default: Date.now },
 });
 
