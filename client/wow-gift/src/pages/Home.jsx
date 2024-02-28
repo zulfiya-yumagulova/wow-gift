@@ -11,6 +11,15 @@ import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
 function Home() {
   const [gifts, setGifts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [expandedDescriptionIndex, setExpandedDescriptionIndex] =
+    useState(null);
+  // Function to slice text to a specified length
+  const sliceText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   // Fetch Gifts data
   useEffect(() => {
@@ -18,47 +27,41 @@ function Home() {
     axios
       .get("http://localhost:8001/gifts")
       .then((res) => {
-        setGifts(res.data.data.allGifts);
+        const formattedGifts = res.data.data.allGifts.map((gift) => ({
+          ...gift,
+          description: sliceText(gift.description, 100), // Adjust the maxLength as needed
+        }));
+        setGifts(formattedGifts);
         setLoading(false);
-        console.log(gifts, "gifts");
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
       });
   }, []);
-  // const getGifts = async () => {
-  //   const response = await fetch(`http://localhost:8001/gifts`);
-  //   const data = await response.json();
-  //   console.log(data.data.allGifts);
 
-  //   setGifts(data);
-  //   // console.log("Todos!!!!!!", gifts);
-  // };
+  // Function to toggle expanded description
+  const toggleExpandedDescription = (index) => {
+    setExpandedDescriptionIndex((prevIndex) =>
+      prevIndex === index ? null : index
+    );
+  };
+  // // Fetch Gifts data
   // useEffect(() => {
-  //   getGifts();
+  //   setLoading(true);
+  //   axios
+  //     .get("http://localhost:8001/gifts")
+  //     .then((res) => {
+  //       setGifts(res.data.data.allGifts);
+  //       setLoading(false);
+  //       console.log(gifts, "gifts");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setLoading(false);
+  //     });
   // }, []);
-  // console.log("gifts", gifts.data.allGifts);
-  // {
-  //   gifts.data.allGifts.map((gift) => {
-  //     console.log(gift, "gift from map");
-  //   });
-  // }
 
-  //   <div class="max-w-sm rounded overflow-hidden shadow-lg">
-  //   <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains">
-  //   <div class="px-6 py-4">
-  //     <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-  //     <p class="text-gray-700 text-base">
-  //       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-  //     </p>
-  //   </div>
-  //   <div class="px-6 pt-4 pb-2">
-  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-  //     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-  //   </div>
-  // </div>
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
@@ -72,23 +75,24 @@ function Home() {
           {gifts.map((gift, index) => (
             <div
               key={index}
-              className="m-3 max-w-sm rounded overflow-hidden shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 mb-4 bg-gray-500"
+              className="m-3 max-w-sm rounded overflow-hidden shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 mb-4 bg-gray-100"
             >
               {/* <img className="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> */}
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{gift.title}</div>
-                <p className="text-gray-700 text-base">{gift.description}</p>
-              </div>
-              <div className="px-6 pt-4 pb-2">
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #photography
-                </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #travel
-                </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #winter
-                </span>
+                <p className="text-gray-700 text-base">
+                  {expandedDescriptionIndex === index
+                    ? gift.description
+                    : sliceText(gift.description, 100)}
+                  <button
+                    className="text-blue-500 hover:underline focus:outline-none"
+                    onClick={() => toggleExpandedDescription(index)}
+                  >
+                    {expandedDescriptionIndex === index
+                      ? "Read Less"
+                      : "Read More"}
+                  </button>
+                </p>
               </div>
             </div>
           ))}
